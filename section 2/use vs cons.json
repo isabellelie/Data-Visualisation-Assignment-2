@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/use%20and%20consumption%202.csv"},
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/main/use%20and%20consumption%202.csv"},
     "config": {"view": {"fill": "transparent", "stroke": null}},
 
     "width": 600,
