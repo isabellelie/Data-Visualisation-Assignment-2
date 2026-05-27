@@ -1,0 +1,161 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/monthly%20rainfall.csv"},
+    "config": {"view": {"fill": "transparent", "stroke": null}},
+
+    "vconcat": [
+        {
+            "width": 700,
+            "height": 350,
+            "transform": [
+                {
+                    "calculate": "indexof(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datum.Month)",
+                    "as": "monthIndex"
+                },
+                {
+                    "calculate": "11 - indexof(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datum.Month)",
+                    "as": "stackOrder"
+                },
+                {
+                    "filter": {"param": "brush"}
+                },
+                {
+                    "filter": {"param": "monthFilter"}
+                }
+            ],
+            "layer": [
+                {
+                    "mark": "bar",
+                    "encoding": {
+                            "x": {
+                            "field": "Year",
+                            "type": "ordinal",
+                            "title": "Year",
+                            "axis": {"grid": false, "labelAngle": 0, "title": null, "format": "d", "labelOverlap": "greedy"}
+                        },
+                        "y": {
+                            "field":"Value",
+                            "type": "quantitative",
+                            "aggregate": "sum",
+                            "title": "Rainfall (mm)",
+                            "axis": {"grid": false}
+                        },
+                        "color": {
+                            "field": "Month",
+                            "type": "nominal",
+                            "sort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                            "scale": {
+                                "domain": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                "range": [
+                                    "#c6dbef",
+                                    "#9ecae1",
+                                    "#6baed6",
+                                    "#4292c6",
+                                    "#2171b5",
+                                    "#08519c",
+                                    "#08306b",
+                                    "#0f4c75",
+                                    "#136f63",
+                                    "#2a9d8f",
+                                    "#5ec2b7",
+                                    "#b2f0e8"
+                                ]
+                            }
+                        },
+                        "order": {
+                            "field": "stackOrder",
+                            "type": "quantitative"
+                        },
+                        "tooltip": [
+                            {"field": "Year"},
+                            {"field": "Month"},
+                            {"field": "Value", "title": "Rainfall"}
+                        ]
+                    },
+                    "params": [
+                        {
+                            "name": "monthFilter",
+                            "select": {
+                                "type": "point",
+                                "fields": ["Month"]
+                            },
+                            "bind": "legend"
+                        }
+                    ]
+                },
+                {
+                    "transform": [
+                        {
+                            "aggregate": [
+                                {
+                                    "op": "mean",
+                                    "field": "Value",
+                                    "as": "yearavg"
+                                }
+                            ],
+                            "groupby": ["Year"]
+                        }
+                    ],
+                    "mark": {
+                        "type": "line",
+                        "color": "black",
+                        "strokeWidth": 2
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "Year",
+                            "type": "ordinal"
+                        },
+                        "y": {
+                            "field": "yearavg",
+                            "type": "quantitative"
+                        }
+                    }
+                }
+            ]   
+        },
+        {
+            "width": 700,
+            "height": 80,
+            "transform": [{
+                    "calculate": "indexof(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datum.Month)",
+                    "as": "monthIndex"
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "color": "grey" 
+            },
+            "encoding": {
+                "x": {
+                    "field": "Year",
+                    "type": "quantitative",
+                    "axis": {"format": "d", "grid": false}
+                },
+                "y": {
+                    "aggregate": "sum",
+                    "field": "Value",
+                    "axis": {"grid": false}
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "brush",
+                        "value": 1
+                    },
+                    "value": 0.3
+                }
+            },    
+            "params": [
+                {
+                    "name": "brush",
+                    "select": {
+                        "type": "interval",
+                        "encodings": ["x"]
+                    },
+                    "value": {"x": [2005, 2025]}
+                }
+            ]
+        
+        }
+    ]    
+}

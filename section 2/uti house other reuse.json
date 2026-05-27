@@ -1,0 +1,430 @@
+
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "config": {"view": {"stroke": "transparent"}},
+    "vconcat": [
+        {
+            "width": 400,
+            "height": 250,
+            "title": "Utility Services",
+            "data": {"url":"https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/sectors%20reuse%20water.csv"},
+            "transform": [
+                {"filter": "datum.sector === 'Utility Services'"},
+                {"calculate": "toNumber(datum.value)", "as": "amount"},
+                {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
+                {"window": [{"op": "lead", "field": "year", "as": "lead"}]},
+                {"calculate": "datum.lead === null ? datum.year: datum.lead", "as": "lead"},
+                {"calculate": "datum.year === 'End' ? 0:datum.sum - datum.amount", "as": "previous_sum"},
+                {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+                {"calculate": "datum.year === 'Start' || datum.year === 'End' ? '' : (datum.amount > 0 ? '+' : '') + datum.amount", "as": "text_amount"}
+            ],
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "ordinal",
+                    "sort": null,
+                    "axis": {
+                        "labelAngle": 0,
+                        "title": "Year",
+                        "labelFontWeight": "bold"
+                    }
+                }
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "bar",
+                        "size": 45
+                    },
+                    "encoding": {
+                        "y": {
+                            "field": "previous_sum",
+                            "type": "quantitative",
+                            "axis": {"title": "Reuse Water (ML)", "grid": false}
+                        },
+                        "y2": {"field": "sum"},
+                        "color": {
+                            "condition": [
+                                {
+                                    "test": "datum.year === 'Start' || datum.year === 'End'",
+                                    "value": "#d6d6d6"
+                                },
+                                {
+                                    "test": "datum.amount < 0",
+                                    "value": "#04c4b1"
+                                }
+                            ], "value": "#30acfc"
+                        },
+                        "tooltip": [
+                            {"field": "sector", "type": "nominal", "title": "Sector" },
+                            {"field": "year", "type": "nominal", "title": "Year" },
+                            {"field": "amount", "type": "quantitative", "title": "Change (ML)" },
+                            {"field": "sum", "type": "quantitative", "title": "Water Reuse (ML)" }
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 2,
+                        "xOffset": -22.5,
+                        "x2Offset": 22.5
+                    },
+                    "encoding": {
+                        "x2": {"field": "lead"},
+                        "y": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "baseline": "middle",
+                        "fontSize": 11,
+                        "dy": {"expr": "datum.year === '2023' ? -10 : (datum.amount >= 0 ? 0 : 0)"}
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "center", "type": "quantitative"},
+                        "text": {"field": "text_amount"},
+                        "color": {
+                            "condition": [
+                                {"test": "datum.year === '2023'", "value": "black"}
+                            ], "value": "white"
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "baseline": "middle",
+                        "fontSize": 14,
+                        "dy": {"expr": "datum.amount >= 0 ? -8 : 8"},
+                        "color": "black"
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "sum", "type": "quantitative"},
+                        "text": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 1
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 220},
+                        "x2": {"value": 190},
+                        "y": {"value": 60},
+                        "y2": {"value": 90}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "color": "black",
+                        "lineBreak": "\n",
+                        "dx": 10,
+                        "dy": -10,
+                        "fontSize": 12
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 120},
+                        "y": {"value": 110},
+                        "text": {
+                            "value": "Utility services showed \na consistent upward \ntrend throughout \nthe years with a \nspike increase in 2024"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "width": 400,
+            "height": 240,
+            "title": "Households",
+            "data": {"url":"https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/sectors%20reuse%20water.csv"},
+            "transform": [
+                {"filter": "datum.sector === 'Households'"},
+                {"calculate": "toNumber(datum.value)", "as": "amount"},
+                {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
+                {"window": [{"op": "lead", "field": "year", "as": "lead"}]},
+                {"calculate": "datum.lead === null ? datum.year: datum.lead", "as": "lead"},
+                {"calculate": "datum.year === 'End' ? 0:datum.sum - datum.amount", "as": "previous_sum"},
+                {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+                {"calculate": "datum.year === 'Start' || datum.year === 'End' ? '' : (datum.amount > 0 ? '+' : '') + datum.amount", "as": "text_amount"}
+            ],
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "ordinal",
+                    "sort": null,
+                    "axis": {
+                        "labelAngle": 0,
+                        "title": "Year",
+                        "labelFontWeight": "bold"
+                    }
+                }
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "bar",
+                        "size": 45
+                    },
+                    "encoding": {
+                        "y": {
+                            "field": "previous_sum",
+                            "type": "quantitative",
+                            "axis": {"title": "Reuse Water (ML)", "grid": false}
+                        },
+                        "y2": {"field": "sum"},
+                        "color": {
+                            "condition": [
+                                {
+                                    "test": "datum.year === 'Start' || datum.year === 'End'",
+                                    "value": "#d6d6d6"
+                                },
+                                {
+                                    "test": "datum.amount < 0",
+                                    "value": "#04c4b1"
+                                }
+                            ], "value": "#30acfc"
+                        },
+                        "tooltip": [
+                            {"field": "sector", "type": "nominal", "title": "Sector" },
+                            {"field": "year", "type": "nominal", "title": "Year" },
+                            {"field": "amount", "type": "quantitative", "title": "Change (ML)" },
+                            {"field": "sum", "type": "quantitative", "title": "Water Reuse (ML)" }
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 2,
+                        "xOffset": -22.5,
+                        "x2Offset": 22.5
+                    },
+                    "encoding": {
+                        "x2": {"field": "lead"},
+                        "y": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "baseline": "middle",
+                        "fontSize": 11,
+                        "dy": {"expr": "datum.year === '2021' ? -12 : datum.year === '2023' ? -15 : (datum.amount >= 0 ? -0 : 0)"}
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "center", "type": "quantitative"},
+                        "text": {"field": "text_amount"},
+                        "color": {
+                            "condition": [
+                                {"test": "datum.year === '2023' || datum.year === '2021'", "value": "black"}
+                            ], "value": "white"
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "baseline": "middle",
+                        "fontSize": 14,
+                        "dy": {"expr": "datum.amount >= 0 ? -8 : 8"},
+                        "color": "black"
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "sum", "type": "quantitative"},
+                        "text": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 1
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 130},
+                        "x2": {"value": 150},
+                        "y": {"value": 55},
+                        "y2": {"value": 90}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "color": "black",
+                        "lineBreak": "\n",
+                        "dx": 10,
+                        "dy": -10,
+                        "fontSize": 12
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 140},
+                        "y": {"value": 120},
+                        "text": {
+                            "value": "Households maintain a \nrelatively stable usage\n of recycle water \nwith minor fluctuations \nbefore a surge increase \nin 2024"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "width": 400,
+            "height": 245,
+            "title": "Other Industries",
+            "data": {"url":"https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/sectors%20reuse%20water.csv"},
+            "transform": [
+                {"filter": "datum.sector === 'Other Industries'"},
+                {"calculate": "toNumber(datum.value)", "as": "amount"},
+                {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
+                {"window": [{"op": "lead", "field": "year", "as": "lead"}]},
+                {"calculate": "datum.lead === null ? datum.year: datum.lead", "as": "lead"},
+                {"calculate": "datum.year === 'End' ? 0:datum.sum - datum.amount", "as": "previous_sum"},
+                {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+                {"calculate": "datum.year === 'Start' || datum.year === 'End' ? '' : (datum.amount > 0 ? '+' : '') + datum.amount", "as": "text_amount"}
+            ],
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "ordinal",
+                    "sort": null,
+                    "axis": {
+                        "labelAngle": 0,
+                        "title": "Year",
+                        "labelFontWeight": "bold"
+                    }
+                }
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "bar",
+                        "size": 45
+                    },
+                    "encoding": {
+                        "y": {
+                            "field": "previous_sum",
+                            "type": "quantitative",
+                            "axis": {"title": "Reuse Water (ML)", "grid": false}
+                        },
+                        "y2": {"field": "sum"},
+                        "color": {
+                            "condition": [
+                                {
+                                    "test": "datum.year === 'Start' || datum.year === 'End'",
+                                    "value": "#d6d6d6"
+                                },
+                                {
+                                    "test": "datum.amount < 0",
+                                    "value": "#04c4b1"
+                                }
+                            ], "value": "#30acfc"
+                        },
+                        "tooltip": [
+                            {"field": "sector", "type": "nominal", "title": "Sector" },
+                            {"field": "year", "type": "nominal", "title": "Year" },
+                            {"field": "amount", "type": "quantitative", "title": "Change (ML)" },
+                            {"field": "sum", "type": "quantitative", "title": "Water Reuse (ML)" }
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 2,
+                        "xOffset": -22.5,
+                        "x2Offset": 22.5
+                    },
+                    "encoding": {
+                        "x2": {"field": "lead"},
+                        "y": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "baseline": "middle",
+                        "fontSize": 11,
+                        "dy": {"expr": "datum.year === '2023' ? -12 : (datum.amount >= 0 ? -0 : 0)"}
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "center", "type": "quantitative"},
+                        "text": {"field": "text_amount"},
+                        "color": {
+                            "condition": [
+                                {"test": "datum.year === '2023'", "value": "black"}
+                            ], "value": "white"
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "baseline": "middle",
+                        "fontSize": 14,
+                        "dy": {"expr": "datum.amount >= 0 ? -8 : 8"},
+                        "color": "black"
+                    },
+                    "encoding": {
+                        "x": {"field": "year"},
+                        "y": {"field": "sum", "type": "quantitative"},
+                        "text": {"field": "sum", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "black",
+                        "strokeWidth": 1
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 230},
+                        "x2": {"value": 200},
+                        "y": {"value": 65},
+                        "y2": {"value": 90}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "color": "black",
+                        "lineBreak": "\n",
+                        "dx": 10,
+                        "dy": -10,
+                        "fontSize": 12
+                    },
+                    "encoding": {
+                        "color": {"value": "black"},
+                        "x": {"value": 140},
+                        "y": {"value": 110},
+                        "text": {
+                            "value": "There is a sharp \ndecline wiping out \nover 15000 ML of \nreuse water by 2023, \nfollowed by a \nsubstantial surge \nin 2024"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

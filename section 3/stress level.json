@@ -1,0 +1,392 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/restrict%20vs%20storage%20vs%20rainfall.csv"},
+    "config": {"view": {"stroke": null}},
+    "transform": [
+        {
+            "fold": [
+                "rainfall stress",
+                "storage stress",
+                "restriction score"
+            ], "as": ["dimension", "value"]
+        },
+        {
+            "calculate": "datum.dimension === 'rainfall stress' ? 0 : datum.dimension === 'storage stress' ? 1 : 2", 
+            "as": "xpos"
+        },
+        {
+            "calculate": "datum.dimension === 'rainfall stress' && datum.value > 50",
+            "as": "rainfallhot"
+        },
+        {
+            "calculate": "datum.dimension === 'storage stress' && datum.value > 25",
+            "as": "storagehot"
+        },
+        {
+            "calculate": "datum.dimension === 'restriction score' && datum.value > 25",
+            "as": "restricthot"
+        },
+        {
+            "window": [{"op": "row_number", "as": "index"}], "groupby": ["state"]
+        },
+        {
+            "filter": {"param": "statefilter"}
+        }
+    ],
+    "width": 945,
+    "height": 400,
+    "encoding": {
+        "x": {
+            "field": "xpos",
+            "type": "quantitative", 
+            "scale": {
+                "domain": [0, 2],
+                "padding": 0
+            },
+            "axis": {
+                "title": null,
+                "values": [0, 1, 2],
+                "labelExpr": "datum.value === 0 ? 'Rainfall' : datum.value === 1 ? 'Storage' : 'Restriction'"
+            }
+        },
+        "y": {
+            "field": "value",
+            "type": "quantitative",
+            "scale": {"domain": [0, 100]},
+            "axis": {"title": "Stress Level (%)", "grid": false}
+        },
+        "color": {
+            "field": "state",
+            "type": "nominal", 
+            "scale": {
+                "domain": ["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"],
+                "range": [
+                    "#4E79A7",
+                    "#F28E2B",
+                    "#E15759",
+                    "#B07AA1",
+                    "#9C755F",
+                    "#FF9DA7",
+                    "#BAB0AC",
+                    "#EDC948"
+                ]
+            },
+            "legend": {"title": "State"}
+        },
+        "detail": {"field": "state"}
+    },
+    "layer": [
+        {
+            "mark": {"type": "line", "opacity": 0.8},
+            "params": [
+                        {
+                            "name": "statefilter",
+                            "select": {
+                                "type": "point",
+                                "fields": ["state"]
+                            },
+                            "bind": "legend"
+                        }
+                    ]
+        },
+        {
+            "mark": {"type": "rule", "color": "#e0e0e0"},
+            "encoding": {"x": {"field": "xpos"}}
+        },
+        {
+            "mark": {"type": "point", "size": 50, "filled": true},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'rainfall stress' && datum.rainfallhot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#4aa3ff", "size": 420, "opacity": 0.08},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'rainfall stress' && datum.rainfallhot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#4aa3ff", "size": 260, "opacity": 0.12},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'rainfall stress' && datum.rainfallhot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#4aa3ff", "size": 160, "opacity": 0.18},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'storage stress' && datum.storagehot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff9f43", "size": 420, "opacity": 0.08},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'storage stress' && datum.storagehot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff9f43", "size": 260, "opacity": 0.12},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'storage stress' && datum.storagehot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff9f43", "size": 160, "opacity": 0.18},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'restriction score' && datum.restricthot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff4d4d", "size": 420, "opacity": 0.08},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'restriction score' && datum.restricthot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff4d4d", "size": 260, "opacity": 0.12},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {"filter": "datum.dimension === 'restriction score' && datum.restricthot"}
+            ],
+            "mark": {"type": "point", "filled": true, "color": "#ff4d4d", "size": 160, "opacity": 0.18},
+            "encoding": {
+                "tooltip": [
+                    {"field": "state", "type": "nominal", "title": "State"},
+                    {"field": "dimension", "type": "nominal", "title": "Category"},
+                    {"field": "value", "type": "quantitative", "title": "Value (%)"}
+                ]
+            }
+        },
+        {
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 10},
+                "x2": {"value": 100},
+                "y": {"value": 130},
+                "y2": {"value": 90}
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "color": "black",
+                "lineBreak": "\n",
+                "dx": 10,
+                "dy": -10,
+                "fontSize": 12
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 40},
+                "y": {"value": 40},
+                "text": {
+                    "value": "WA and SA has the highest \nrainfall stress, however their \nlines sharply decline in the center, \nresilient storage infrastructures"
+                }
+            }
+        },
+        {
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 780},
+                "x2": {"value": 830},
+                "y": {"value": 195},
+                "y2": {"value": 155}
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "color": "black",
+                "lineBreak": "\n",
+                "dx": 10,
+                "dy": -10,
+                "fontSize": 12
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 750},
+                "y": {"value": 80},
+                "text": {
+                    "value": "TAS has extremely high \nrainfall (0% stress), but has \nthe highest storage stress \nand restriction score, showing \nsevere infrastructure supply \ndespite abundant rainfall "
+                }
+            }
+        },
+        {
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 550},
+                "x2": {"value": 600},
+                "y": {"value": 260},
+                "y2": {"value": 170}
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "color": "black",
+                "lineBreak": "\n",
+                "dx": 10,
+                "dy": -10,
+                "fontSize": 12
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 500},
+                "y": {"value": 95},
+                "text": {
+                    "value": "VIC and NSW has the most \nconstant pathways across \nthe chart that gently \nslopes downward leading \nto a final restriction score \nof around 20 to 26%"
+                }
+            }
+        },
+        {
+
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 100},
+                "x2": {"value": 190},
+                "y": {"value": 235},
+                "y2": {"value": 180}
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "color": "black",
+                "lineBreak": "\n",
+                "dx": 10,
+                "dy": -10,
+                "fontSize": 12
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 150},
+                "y": {"value": 120},
+                "text": {
+                    "value": "QLD and NT have a \ndownward trajectory where \nmoderate-to-high rainfall \nstress lead to low \nstorage stress"
+                }
+            }
+        },
+        {
+
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 300},
+                "x2": {"value": 400},
+                "y": {"value": 270},
+                "y2": {"value": 160}
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "color": "black",
+                "lineBreak": "\n",
+                "dx": 10,
+                "dy": -10,
+                "fontSize": 12
+            },
+            "encoding": {
+                "color": {"value": "black"},
+                "x": {"value": 315},
+                "y": {"value": 75},
+                "text": {
+                    "value": "ACT showed a steady \nlinear descent from \nmoderate rainfall stress \nto low storage stress \nand a low restriction score, \nindicating predictable and \nresilient water supply"
+                }
+            }
+        }
+        
+    ]
+}

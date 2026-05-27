@@ -1,0 +1,133 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20source%20overtime.csv"},
+    "config": {"view": {"fill": "transparent", "stroke": null}},
+
+    "params": [
+        {
+            "name": "year_filter",
+            "value": 2024,
+            "bind": {
+                "input": "range",
+                "min": 2016,
+                "max": 2024,
+                "step": 1,
+                "name": "Year "
+            }
+        }
+    ],
+    
+    "vconcat": [
+        {
+            "width": 680,
+            "height": 300,
+            "params": [
+                {
+                    "name": "origin_select",
+                    "select": {
+                        "type": "point",
+                        "fields": ["origin"],
+                        "toggle": true
+                    }
+                }
+            ],
+            "transform": [
+                {
+                    "filter": "toNumber(datum.year) <= year_filter"
+                },
+                {
+                    "filter": {
+                        "param": "origin_select"
+                    }
+                }
+            ],
+                "mark": {
+                    "type": "area",
+                    "interpolate": "monotone",
+                    "opacity": 0.85
+                },
+                "encoding": {
+                    "x": {
+                        "field": "year",
+                        "type": "nominal",
+                        "axis": {"labelAngle": 0},
+                        "title": "Year"
+                    },
+                    "y": {
+                        "field": "value",
+                        "type": "quantitative",
+                        "stack": "zero",
+                        "title": "Water Volume (GL)",
+                        "scale": {"domain": [0, 2200000]},
+                        "axis": {"grid": false}
+                    },
+                    "color": {
+                        "field": "origin",
+                        "type": "nominal",
+                        "scale": {
+                            "domain": ["Surface Water", "Groundwater", "Sea Water"],
+                            "range": ["#abd9e9","#04c4b1", "#153f8a"]
+                        },
+                        "legend": {"title": "Origin", "offset":-30}
+                    },
+                    "opacity": {
+                        "condition": {
+                            "param": "origin_select",
+                            "value": 1
+                        },
+                        "value": 0.15
+                    },
+                    "tooltip": [
+                        {"field": "year", "title": "Year"},
+                        {"field": "origin", "title": "Origin"},
+                        {"field": "value", "title": "Water Volume (GL)"}
+                    ]
+                }
+        },
+        {
+            "width": 680,
+            "height": 100,
+            "params": [
+                {
+                    "name": "origin_select",
+                    "select": {
+                        "type": "point",
+                        "fields": ["origin"],
+                        "toggle": true
+                    }
+                }
+            ],
+            "mark": "bar",
+            "encoding": {
+                "x": {
+                    "field": "origin",
+                    "type": "nominal",
+                    "sort": "-y",
+                    "title": "Origin (Click to Filter)",
+                    "axis": {"labelAngle": 0}
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "aggregate": "mean",
+                    "title": "Annual Average Volume (GL)",
+                    "axis": {"grid": false}
+                },
+                "color": {
+                    "condition": {
+                        "param": "origin_select",
+                        "field": "origin",
+                        "type": "nominal",
+                        "scale": {"scheme": "tableau10"}
+                    }, "value": "lightgrey"
+                },
+                "tooltip": [
+                    {"field": "year", "title": "Year"},
+                    {"field": "origin", "title": "Origin"},
+                    {"field": "value", "title": "Average Volume (GL)"}
+                ]
+            }
+        }
+    ]
+    
+}

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dashboard.css Template</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+    <script src = "charts.js"></script>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class = "page">
+        <div class = "card">
+            <header class = "title">
+                <h1> IS AUSTRALIA WATER-RICH?</h1>
+                <h2> Australia's Water Security and Consumption</h2>
+                <div class="intro-section">
+                     <div class="intro-text">
+                        <header class = "info">
+                        <h4>
+                            Australia's <strong>water security</strong> is increasingly shaped by the balance between <strong>national water availability</strong>,
+                            <strong>growing demand</strong> through rising population, and <strong>long-term sustainability pressure</strong>. This visualisation 
+                            explores how various factors such as rainfall availability, water storage, and sector consumption
+                            <strong>influences</strong> the nation's ability to maintian <strong>reliable and accessible water</strong> across states and industries.
+                            Throughout interactive visualisations here, it highlights changing water supply patterns, industry 
+                            dependence on water resources, regional restriction pressure, and Australia's progress towards
+                            greater water efficiency through various movements and activities. Together, these insights provide
+                            a comprehensive overview of the <strong>challenges and resillience</strong> of Australia's future water supply and security.
+                        </h4>
+                        </header>
+                    </div>
+                    <div class="intro-image">
+                        <img src="data/image.jpg" alt="Water Security">
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <h3>HOW MUCH WATER DO AUSTRALIA RECEIVE?</h3>
+            </header>
+        </div>
+        <div class = "card">
+            <header class = "section">
+                <h3>National Rainfall Over the Years (1900-2025)</h3>
+            </header>>
+            <div class="divider">
+                <div class="chart-block">
+                    <div id="chart1"></div>
+                </div>
+                <div class="text-block">
+                    <header class = "info"> 
+                        <h4>The stacked bar chart displays Australia's average annual rainfall data from 1900 to 2025 that is
+                            broken down by monthly contributions. A secondary timeline below displays the annual rainfall data across the 125-year 
+                            period in one view. The total annual rainfall typically <strong>fluctuate between 300mm and 600mm </strong> with extreme outliers present as well. 
+                            The wettest periods occured during the <strong>1970s</strong>, peaking near <strong>760mm in 1974</strong> followed by <strong>2000</strong> and <strong>2011</strong> 
+                            where annual average reached <strong>700mm</strong>. The color-embedded legend showed consistent seasonal pattern where <strong>cooler months</strong> (darker colors) 
+                            are the <strong>driest</strong> all year around while <strong>hotter</strong> months (lighter colors) have <strong>higher rainfalls</strong>. The all-year-around data 
+                            highlights how Australia's rainfall consistently stayed <strong>volatile</strong> across the years, and have recently spiked again since <strong>2020</strong>.
+                        </h4>
+                    </header>
+                </div>
+            </div>
+            <header class = "info">
+                    <h4><strong>Data source: </strong>(BOM, 2026) <br>
+                        https://www.bom.gov.au/cgi-bin/climate/change/timeseries.cgi?graph=rain&area=aus&season=allmonths&ave_yr=T
+                    </h4>
+            </header>
+            <header class = "section"> 
+                <h4>Water Supply Proportion Over the Years (2015-2024)</h4>
+            </header>
+            <div class="divider">
+                <div class="chart-block">
+                    <div id="chart2"></div>
+                </div>
+                <div class="text-block5">
+                    <header class = "info"> 
+                        <h4>
+                           The visualisation tracks Australia's water supply origins from 2015
+                           to 2024, revealing a massive strucutral reliance on <strong>sea water</strong> reaching 
+                           over <strong>1.5 million GL</strong> annually. <strong>Surface water</strong> from dams and rivers serves as 
+                           the primary buffer, expanding significantly to a peak in <strong>2022</strong> for all water types
+                            (high rainfall year)
+                           before <strong>declining</strong> in <strong>2024</strong> as drier climate patterns surged. On the other hand,
+                           <strong>groundwater</strong> maintains a very <strong>small proportion</strong> from the different water sources compared, highlighting
+                           its use as a <strong>'last resort'</strong> rather than primary source. Total supply peaked in <strong>2022</strong>, 
+                           exceeding over <strong>2 million GL</strong> in total. Over the years, the proportion of each
+                           water type remain relatively constant, with groundwater having a <strong>more stable</strong> and flat
+                           trend. <strong>Sea water</strong> experienced a relatively <strong>more drastic</strong> change compared to the other 
+                           2 types, suggesting that it acts as a more accessible source of water.
+                        </h4>
+                    </header>
+                </div>
+            </div>
+            <header class = "info">
+                    <h4><strong>Data source: </strong>(ABS, 2024) <br>
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release
+                    </h4>
+            </header>
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <h3>INDUSTRY DEMAND AND WATER CONSUMPTION</h3>
+            </header>
+        </div>
+        <div class = "card">
+            <header class = "section">
+                <h3>Water Usage by Sector Over the Years (2015-2024)</h3>
+                <div id="chart3"></div>
+            </header>
+            <header class = "info">
+                    <h4><strong>Data source: </strong>(ABS, 2024) <br>
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release
+                    </h4>
+            </header>
+            <header class = "section">
+                <h4>Water Use and Water Consumption by Sector (2024)</h4>
+                <div class="divider">
+                <div class="chart-block">
+                    <div id="chart4"></div>
+                </div>
+                <div class="text-block2">
+                    <header class = "info"> 
+                        <h4>
+                            <strong>Water use</strong> is the amount of water taken for human and industrial activities that <strong>can be returned</strong>
+                            to the water source, while <strong>water consumption</strong> refers to the water that is <strong>permanently lost</strong>.
+                            Hydroelectricity has the <strong>largest gap</strong> with <strong>high water use</strong>
+                            but with a <strong>very low water consumption</strong>, emphasising its high usage which remain <strong>non-consumptive</strong>.
+                            <strong>Household</strong> has the <strong>highest</strong> 
+                            volume of <strong>water use</strong> with <strong>low consumption</strong> while sectors including 
+                            <strong>agriculture, other industries, and environment</strong> have <strong>equal water use and consumption</strong> ratio, 
+                            highlighting how every water withdrawn by these sectors are entirely lost to the ecosystem.
+
+                        </h4>
+                    </header>
+                </div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(ABS, 2024) <br>
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release
+                    </h4>
+            </header>
+            </header>
+            <header class = "section">
+                <h4>Reuse-Water Used by Industries Over the Years (2021-2024)</h4>
+                <div class="row">
+                    <div id="chart5" class="box"></div>
+                    <div id="chart52" class="box"></div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(ABS, 2024) <br>
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release
+                    </h4>
+            </header>
+            </header>
+        </div>
+
+        <div class = "card2">
+            <div class = "longtext">
+                    <header class = "info">
+                        <h4>
+                            The small multiples waterfall chart per sector showcases the amount of reuse water used by industries over the years.
+                            In <strong>2021 to 2022</strong>, Australia was experiencing <strong>high rainfall</strong> leading to <strong>low dependence</strong>, hence low
+                            usage on recycled or reuse water
+                            for every sector (on average). This was folowed by its lowest point at <strong>2023</strong> which then rapidly surge in <strong>2024</strong> when dry
+                            conditions continue to persist resulting in <strong>heavy reliance</strong> on recycled water for every sector. These drastic changes
+                            were experienced mostly by the agriculture sector experiencing <strong>drastic changes</strong> throughout the years, and the <strong>mining</strong> sector where reuse 
+                            water <strong>declined by over 78%</strong> in 2021 and 2022 due to high Australia's wettest periods. 
+                            Contrasting this, <strong>utility service</strong> showed a <strong>continous increase</strong> throughout the years, building long-term supply.
+                            Manufacturing and households remained high with households experiencing slightly more drastic changes throughout the years compared to other sectors.
+                        </h4>
+                    </header>
+                </div>
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <h3>RISK AND FUTURE PRESSURE</h3>
+            </header>
+        </div>
+        <div class = "card">
+            <header class = "section">
+                <h3>Household Annual Water Consumption vs Water Restriction Levels (2024)</h3>
+                <div class="divider">
+                <div class="chart-block">
+                    <div id="chart6"></div>
+                </div>
+                <div class="text-block2">
+                    <header class = "info"> 
+                        <h4>
+                            The map visualises the spatial relationship between regional <strong>household water
+                            consumption</strong> acrosss Australian states and <strong>localized water restriction levels</strong>. Severity of restriction level
+                            starts from level 1 to level 3, with PWCM representing light daily water measures and no restrictions having the best condition.
+                            The choropleth shading highlights how households in the <strong>Northern Territory and 
+                            Western Australia</strong> consumes the <strong>highest</strong> volume of water annually per capita, while
+                            more <strong>densely populated eastern states</strong> have significantly <strong>lower averages</strong>.
+                            Here, the colored dots highlight how despite having a <strong>lower</strong> statewide household water consumption baseline,
+                            the eastern states, particularly <strong>NSW and QLD</strong> face a much more <strong>severe</strong> supply pressure,
+                            with an overall <strong>level 2 and 3</strong> restrictions. States in the <strong>west and north</strong> manage their
+                            <strong>high</strong> consumption rates under <strong>permanent water conservation measures (PWCM) or no restrictions</strong>
+                            at all on average which may be due to different groundwater dependencies and climates.
+                        </h4>
+                    </header>
+                </div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(BOM, 2026) and (ABS, 2024)<br>
+                        https://www.bom.gov.au/water/restrictions/index.php?state=QLD&serviceAreaLabel=&restrictionName=&searchUsed=1 <br>
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release
+                    </h4>
+                </header>
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <h3>WATER STORAGE AND RESILLIENCE</h3>
+            </header>
+        </div>
+        <div class = "card">
+            <header class = "section">
+                <h3>Population Growth Against Accessible Water Storage (2024)</h3>
+                <div class="divider">
+                <div class="chart-block">
+                    <div id="chart8"></div>
+                </div>
+                <div class="text-block4">
+                    <header class = "info"> 
+                        <h4>
+                            The slope chart visualises the safety buffer or supply strain each major cities in 
+                            Australia faces. On average, a person consumes <strong>110 KL water (0.1 ML)</strong> in a year. 
+                            The population demand is derived using this parameter in determining how much water
+                            is needed for residential consumption. Having the highest population and demand,
+                            <strong>Sydney</strong> has the <strong>largest water storage</strong> while <strong>Hobart</strong> 
+                            has the <strong>lowest</strong> water capacity storage.
+                            Meanwhile, <strong>Perth</strong> has the <strong>highest</strong> water storage availability to 
+                            supply its people, relative
+                            to its <strong>lower demand</strong>. Contrasting this, <strong>Hobart</strong> has a relatively 
+                            <strong>higher demand</strong> than water
+                            storage, showing <strong>high vulnerability</strong> of meeting water needs for the population. There is 
+                            also a lack of storage in <strong>Adelaide</strong> from its almost completely flat line. When compared
+                            throughout the years, the demand has significantly <strong>increased</strong>, creating a flatter slope of
+                            rapidly growing cities like <strong>Sydney and Melbourne</strong>. 
+                        </h4>
+                    </header>
+                </div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(BOM, 2024) <br>
+                        https://www.bom.gov.au/water/dashboards/#/water-storages/summary/state
+                    </h4>
+                </header>
+            </header>
+
+
+            <header class = "section">
+                <h4>Water Storage Stress vs Rainfall Stress vs Water Restriction Score (2025)</h4>
+            </header>
+            <div id="chart7"></div>
+
+            <header class = "info">
+                    <h4><strong>Data source: </strong>(BOM, 2025)<br>
+                        https://www.bom.gov.au/water/dashboards/#/water-storages/summary/state
+                    </h4>
+            </header>   
+
+
+            <header class = "section">
+                <h4>Water Storage vs Rainfall (2024)</h4>
+            </header>
+            <div class="divider">
+                <div class="chart-block">
+                    <div id="chart9"></div>
+                </div>
+                <div class="text-block3">
+                    <header class = "info"> 
+                        <h4>
+                            The visualisation illustrates a clear geographic divide in <strong>water vulnerability</strong>, revealing how 
+                            different regions balance their natural water supply with storage.
+                            In the <strong>northern and eastern</strong> areas such as <strong>NT and QLD</strong>, <strong>high</strong> average annual 
+                            rainfall naturally keeps
+                            local water storage <strong>highly saturated and stable</strong> including capital cities in these areas, making these 
+                            regions more <strong>resilient</strong>. Conversely, <strong>low</strong> rainfall regions like <strong>SA and WA</strong> has a <strong>strong gap</strong> 
+                            between <strong>urban water
+                            infrastructure and state resources</strong>. The gap between city and state storage in SA and WS shows how urban water
+                            storage for city faces <strong>severe deficit</strong> due to lack of natural rainfall. In unusual climates, localised 
+                            water storage are <strong>vulnerable</strong>, forcing urban cities to rely heavily on importing water from wider 
+                            state infrastructure to cope with low annual rainfall.
+                        </h4>
+                    </header>
+                </div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(Bushmans, 2025) and (BOM, 2026) <br>
+                        https://www.bushmantanks.com.au/100-years-of-australian-rainfall/?srsltid=AfmBOoqyHJrIIJ41VPQG1d23Q9eVhZapuQvOZvj9IHMxmbczRsxrAj2j#rainfall-5 <br>
+                        https://www.bom.gov.au/climate/averages/tables/cw_070282.shtml
+                    </h4>
+                </header>   
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <h3>AUSTRALIA'S MOVEMENT TOWARDS WATER EFFICIENCY</h3>
+                
+            </header>
+        </div>
+        <div class = "card">
+            <header class = "section">
+                <h3>Australia's Water Efficiency Movement Target and Progress (2026)</h3>
+                <div class="divider">
+                <div class="chart-block">
+                    <div id="chart10"></div>
+                </div>
+                <div class="text-block2">
+                    <header class = "info"> 
+                        <h4>
+                            The bullet chart tracks Australia's 2026 water recovery and efficiency progress 
+                            against statutory targets like under the Murray-Darling Basin Plan framework.
+                            Australia has nearly achieved its <strong>"Bridging the Gap"</strong> environmental water recovery,
+                            with over <strong>99.4%</strong> of progress completed for <strong>surface water</strong> and <strong>95.1%</strong> 
+                            for <strong>groundwater</strong>.
+                            In contrast, the <strong>"450 GL"</strong> efficiency target which aims to recover water through
+                            modernization projects to reduce water usage is <strong>lagging drastically behind</strong> at just
+                            <strong>54.7%</strong> of progress. These efficiency targets are crucial during dry seasons, particularly
+                            for agricultural systems and regional communities who face harsher socioeconomic strain due
+                            to infrastructure inefficiency and unavailability.
+                        </h4>
+                    </header>
+                </div>
+                </div>
+                <header class = "info">
+                    <h4><strong>Data source: </strong>(DCCEEW, 2026) <br>
+                        https://www.dcceew.gov.au/water/policy/implementing-the-plan/dashboard
+                    </h4>
+                </header> 
+            </header>
+        </div>
+
+        <div class = "card">
+            <header class = "title">
+                <div class="longtext2">
+                    <header class = "info">
+                    <h4>
+                        <div class = "col">
+                            <strong>Designed by Isabelle Kay Lie<br> 
+                            Date: 29 May 2026<br> </strong>
+                            Credits to ABS, Bushman Tanks, DCCEEW, and BOM for the data<br> 
+                            Credits to Pinterest for the images <br>
+                        </div>
+
+                        <br><br><br><br><br><br><br>
+
+                        <div class = "col">
+                        <strong>Data sources: </strong> <br>
+                        https://www.bom.gov.au/cgi-bin/climate/change/timeseries.cgi?graph=rain&area=aus&season=allmonths&ave_yr=T
+                        https://www.abs.gov.au/statistics/environment/environmental-accounts/water-account-australia/latest-release 
+                        https://www.bom.gov.au/water/restrictions/index.php?state=QLD&serviceAreaLabel=&restrictionName=&searchUsed=1 
+                        https://www.bom.gov.au/water/dashboards/#/water-storages/summary/state  
+                        https://www.bom.gov.au/climate/averages/tables/cw_070282.shtml 
+                        https://www.bushmantanks.com.au/100-years-of-australian-rainfall/?srsltid=AfmBOoqyHJrIIJ41VPQG1d23Q9eVhZapuQvOZvj9IHMxmbczRsxrAj2j#rainfall-5 
+                        https://www.bushmantanks.com.au/100-years-of-australian-rainfall/?srsltid=AfmBOoqyHJrIIJ41VPQG1d23Q9eVhZapuQvOZvj9IHMxmbczRsxrAj2j#rainfall-5
+                        https://www.dcceew.gov.au/water/policy/implementing-the-plan/dashboard 
+                        </div>
+                    </h4>
+                    </header>
+                </div>
+            </header>
+        </div>
+
+        </div> 
+    </div>
+</body>
+</html>

@@ -1,0 +1,269 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 700,
+    "height": 500,
+    "projection": {
+        "type": "mercator"
+    },
+    "config": {"view": {"stroke": null}},
+    "params": [
+        {
+            "name": "rainThreshold",
+            "value": 0, 
+            "bind": {
+                "input": "range", 
+                "min": 0, 
+                "max": 100,
+                "step": 10,
+                "name": "Water Storage Used (%)"
+            }
+        },
+        {
+            "name": "viewmode",
+            "value": "City",
+            "bind": {
+                "input": "select",
+                "options": ["City", "State"],
+                "name": "State/City"
+            }
+        }
+    ],
+
+    "layer": [
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/main/australia%20state.json",
+                "format": {"type": "topojson", "feature": "australia"}
+            },
+            "transform": [
+                {
+                    "lookup": "properties.name",
+                    "from": {
+                        "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/rainfall%20state.csv"},
+                        "key": "state",
+                        "fields": ["value"]
+                    }
+                },
+                {
+                    "calculate": "datum.properties.name",
+                    "as": "state_name"
+                }
+            ],
+
+            "mark": {
+                "type": "geoshape",
+                "stroke": "lightgrey",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "tealblues",
+                        "type": "log"
+                    },
+                    "title": "Rainfall (State Avg)"
+                },
+                "tooltip": [
+                    {"field": "properties.name", "type": "nominal", "title": "State"},
+                    {"field": "value", "type": "quantitative", "title": "Rainfall (mm)"}
+                ]
+            }
+        },
+        {
+            "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20storage.csv"},
+            "transform": [
+                {
+                    "calculate": "toNumber(datum.value)",
+                    "as": "value_n"
+                },
+                {
+                    "filter": "viewmode === 'City'"
+                },
+                {
+                    "filter": "datum.value_n >= rainThreshold"
+                }
+            ],
+            "mark": {
+                "type": "circle",
+                "color": "lightgrey",
+                "opacity": 0.5,
+                "stroke": "grey",
+                "strokeWidth": 0.2
+            },
+            "params": [
+                {
+                    "name": "hovercity",
+                    "select": {
+                        "type": "point",
+                        "on": "mouseover",
+                        "clear": "mouseout"
+                    }
+                }
+            ],
+            "encoding": {
+                "longitude": {
+                    "field": "longitude",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "latitude", 
+                    "type": "quantitative"
+                },
+                "size": {
+                    "field": "value_n",
+                    "type": "quantitative",
+                    "scale": {
+                        "range": [30, 4500]
+                    },
+                    "title": null,
+                    "legend": null
+                },
+                "color": {
+                    "value": "lightgrey"
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "hovercity",
+                        "value": 0.9
+                    }, "value": 0.6
+                },
+                "strokeWidth": {
+                    "condition": {
+                        "param": "hovercity",
+                        "value": 0.8
+                    }, "value": 0.2
+                },
+                "tooltip": [
+                    {"field": "city", "title": "City"},
+                    {"field": "value", "title": "Storage Used (%)"}
+                ]
+            }
+        },
+        {
+            "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20storage.csv"},
+            "transform": [
+                {
+                    "calculate": "toNumber(datum.value)",
+                    "as": "value_n"
+                },
+                {
+                    "filter": "viewmode === 'City'"
+                },
+                {
+                    "filter": "datum.value_n >= rainThreshold"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "dy": 0,
+                "fontSize": 10,
+                "fontWeight": "bold",
+                "color": "black"
+            },
+            "encoding": {
+                "longitude": {"field": "longitude"},
+                "latitude": {"field": "latitude"},
+                "text": {"field": "value_n"}
+            }
+        },
+        {
+            "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/state%20storage.csv"},
+            "transform": [
+                {
+                    "calculate": "toNumber(datum.value)",
+                    "as": "value_n"
+                },
+                {
+                    "filter": "viewmode === 'State'"
+                },
+                {
+                    "filter": "datum.value_n >= rainThreshold"
+                }
+            ],
+            "mark": {
+                "type": "circle",
+                "color": "#ff9933",
+                "opacity": 0.5,
+                "stroke": "grey",
+                "strokeWidth": 0.2
+            },
+            "params": [
+                {
+                    "name": "hoverstate",
+                    "select": {
+                        "type": "point",
+                        "on": "mouseover",
+                        "clear": "mouseout"
+                    }
+                }
+            ],
+            "encoding": {
+                "longitude": {
+                    "field": "longitude",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "latitude", 
+                    "type": "quantitative"
+                },
+                "size": {
+                    "field": "value_n",
+                    "type": "quantitative",
+                    "scale": {
+                        "range": [30, 4500]
+                    },
+                    "title": null,
+                    "legend": null
+                },
+                "color": {
+                    "value": "#ff9933"
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "hoverstate",
+                        "value": 0.9
+                    }, "value": 0.6
+                },
+                "strokeWidth": {
+                    "condition": {
+                        "param": "hoverstate",
+                        "value": 0.8
+                    }, "value": 0.2
+                },
+                "tooltip": [
+                    {"field": "state", "title": "State"},
+                    {"field": "value", "title": "Storage Used (%)"}
+                ]
+            }
+        },
+        {
+            "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/state%20storage.csv"},
+            "transform": [
+                {
+                    "calculate": "toNumber(datum.value)",
+                    "as": "value_n"
+                },
+                {
+                    "filter": "viewmode === 'State'"
+                },
+                {
+                    "filter": "datum.value_n >= rainThreshold"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "dy": 0,
+                "fontSize": 10,
+                "fontWeight": "bold",
+                "color": "black"
+            },
+            "encoding": {
+                "longitude": {"field": "longitude"},
+                "latitude": {"field": "latitude"},
+                "text": {"field": "value_n"}
+            }
+        }
+    ]  
+}

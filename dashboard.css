@@ -1,0 +1,200 @@
+body {
+    margin: 0;
+    font-family: Helvetica;
+    font-size: 12px;
+    background: #b8dafc;
+    color: #e6f2ff;
+    line-height: 1.6;
+}
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 1050px;
+    padding: 30px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.card2 {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 1050px;
+    padding: 30px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: -50px;
+}
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 40px;
+}
+
+.title h1 {
+    font-family: Helvetica;
+    font-size: 60px;
+    font-weight: bold;
+    margin: 0;
+    color: #1d3ca1;
+    text-align: center;
+    margin-bottom: 2px;
+}
+.title h2 {
+    font-family: Helvetica;
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0;
+    color: #1d3ca1;
+    text-align: center;
+    padding: 0;
+    margin-top: -25px;
+    
+}
+.title h3 {
+    font-family: Helvetica;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+    color: #1d3ca1;
+    text-align: center;
+    padding: 0;
+}
+.title h4 {
+    font-size: 12px;
+    color: #000000;
+}
+.section h2 {
+    font-family: Helvetica;
+    font-size: 30px;
+    font-weight: bold;
+    color: #1d3ca1;
+}
+
+.section h3 {
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #1d3ca1;
+    margin-top: 0.5px;
+}
+
+.section h4 {
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #1d3ca1;
+    margin-top: 50px;
+}
+
+.info h4 {
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+}
+
+.vega-bind {
+    font-family: Helvetica;
+    font-size: 12px;
+    color: black !important;
+}
+
+.vega-bindings {
+    font-family: Helvetica;
+    font-size: 12px;
+    color: black !important;
+}
+
+.row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.box {
+    flex: 1;
+    display: flex;
+}
+
+.box svg,
+.box canvas {
+    transform: translateX(14px);
+}
+
+.divider {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.chart-block {
+    flex: 2;
+}
+
+.text-block {
+    text-align: left;
+    margin-top: -15px;
+}
+.text-block2 {
+    flex: 1;
+    text-align: left;
+    margin-top: -52px;
+}
+.text-block3 {
+    flex: 1;
+    text-align: left;
+    margin-top: -10px;
+}
+.text-block4 {
+    flex: 1;
+    text-align: left;
+    margin-top: -50px;
+}
+.text-block5 {
+    flex: 1;
+    text-align: left;
+    margin-top: -15px;
+}
+.longtext {
+    column-count: 4;
+    column-width: 70px;
+    column-gap: 20px;
+    transform: translateY(10px);
+}
+.longtext2 {
+    column-count: 2;
+    column-width: 70px;
+    column-gap: 50px;
+}
+.longtext p {
+    padding-right: 40px;
+}
+.intro-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.intro-text {
+    flex: 2;
+}
+
+.intro-image {
+    width: 600px;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.intro-image img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.col {
+    flex: 1;
+}

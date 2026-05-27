@@ -1,0 +1,142 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/use%20and%20consumption%202.csv"},
+    "config": {"view": {"fill": "transparent", "stroke": null}},
+
+    "width": 600,
+    "height": 250,
+    
+    "transform": [
+        {
+            "calculate": "datum.use - datum.consumption",
+            "as": "diff"
+        },
+        {
+            "calculate": "datum.use",
+            "as": "value"
+        },
+        {
+            "calculate": "'Water Use'",
+            "as": "Type"
+        }
+    ],
+
+    "params": [
+        {
+            "name": "Type",
+            "value": "Water Use and Consumption",
+            "bind": {
+                "input": "select",
+                "options": ["both", "use", "consumption"],
+                "labels": ["Water Use and Consumption", "Water Use", "Water Consumption"],
+                "name": "Type "
+            }
+        }
+    ],
+
+    "layer": [
+        {
+            "transform": [
+                {
+                    "calculate": "datum.use - datum.consumption",
+                    "as": "Difference"
+                }
+            ],
+            "mark": {
+                "type": "line",
+                "strokeWidth": 9,
+                "strokeCap": "round",
+                "opacity": 1
+            },
+            "encoding": {
+                "x": {"field": "use", "type": "quantitative", "axis": {"title": "Water Use and Consumption (ML)", "grid": false}, "scale": {"type": "log"}},
+                "x2": {"field": "consumption"},
+                "y": {
+                    "field": "category",
+                    "type": "nominal",
+                    "sort": {"field": "diff", "order": "descending"},
+                    "axis": {"title": null, "grid": false}
+                },
+                "color": {"value": "lightgrey"},
+                "tooltip": [
+                    {"field": "Difference", "title": "Difference (ML)"}
+                ]
+            }
+        },
+        {
+            "transform": [
+                {
+                    "calculate": "datum.use",
+                    "as": "value"
+                },
+                {
+                    "calculate": "'Water Use'",
+                    "as": "Type"
+                }
+            ],
+            "mark": {
+                "type": "point",
+                "filled": true,
+                "opacity": 0.6,
+                "size": 120
+            },
+            "encoding": {
+                "x": {"field": "use", "type": "quantitative", "axis": {"title": "Water Use and Consumption (ML)"}, "scale": {"type": "log"}},
+                "y": {"field": "category", "type": "nominal", "sort": {"field": "diff", "order": "descending"}, "axis": {"title": null}},
+                "size": {
+                    "field": "use",
+                    "type": "quantitative",
+                    "scale": {"range": [80, 1200]},
+                    "legend": null
+                },
+                "color": {
+                    "field": "Type", "type": "nominal",
+                    "scale": {"domain": ["Water Use", "Water Consumption"], "range": ["#4C78A8", "#04c4b1"]},
+                    "legend": {"orient": "none", "legendX": 500, "legendY": 180}
+                },
+                "opacity": {
+                    "condition": {
+                        "test": "Type == 'consumption'",
+                        "value": 0.1
+                    },
+                    "value": 1
+                },
+                "tooltip": [
+                    {"field": "category", "title": "Sector"},
+                    {"field": "use", "title": "Water Use (ML)"}
+                ]
+            }
+        },
+        {
+            "mark": {
+                "type": "point",
+                "filled": true,
+                "size": 120,
+                "opacity": 0.7
+            },
+            "encoding": {
+                "x": {"field": "consumption", "type": "quantitative", "axis": {"title": "Water Use and Consumption (ML)"}, "scale": {"type": "log"}},
+                "y": {"field": "category", "type": "nominal", "sort": {"field": "diff", "order": "descending"}, "axis": {"title": null}},
+                "size": {
+                    "field": "consumption",
+                    "type": "quantitative",
+                    "scale": {"range": [80, 1200]},
+                    "legend": null
+                },
+                "color": {"value": "#04c4b1"},
+                "opacity": {
+                    "condition": {
+                        "test": "Type == 'use'",
+                        "value": 0.1
+                    },
+                    "value": 1
+                },
+                "tooltip": [
+                    {"field": "category", "title": "Sector"},
+                    {"field": "consumption", "title": "Water Consumption (ML)"}
+                ]
+            }
+        }
+    
+    ]
+}

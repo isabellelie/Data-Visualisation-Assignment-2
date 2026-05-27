@@ -1,0 +1,133 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/sector%20rainfall.csv"},
+    "config": {"view": {"fill": "transparent", "stroke": null}},
+
+    "params": [
+        {
+            "name": "year_filter",
+            "value": 2024,
+            "bind": {
+                "input": "range",
+                "min": 2016,
+                "max": 2024,
+                "step": 1,
+                "name": "Year "
+            }
+        }
+    ],
+    
+    "vconcat": [
+        {
+            "width": 650,
+            "height": 280,
+            "params": [
+                {
+                    "name": "sector_select",
+                    "select": {
+                        "type": "point",
+                        "fields": ["sector"],
+                        "toggle": true
+                    }
+                }
+            ],
+            "transform": [
+                {
+                    "filter": "toNumber(datum.year) <= year_filter"
+                },
+                {
+                    "filter": {
+                        "param": "sector_select"
+                    }
+                }
+            ],
+            "mark": {
+                "type": "area",
+                "interpolate": "monotone",
+                "opacity": 0.85
+            },
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "nominal",
+                    "axis": {"labelAngle": 0},
+                    "title": "Year"
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "stack": "zero",
+                    "title": "Water Use (ML)",
+                    "scale": {"domain": [0, 11500]},
+                    "axis": {"grid": false}
+                },
+                "color": {
+                    "field": "sector",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Agriculture", "Household", "Other Industries", "Manufacturing", "Mining"],
+                        "range": ["#2c7bb6", "#fdae61", "#abd9e9", "#f46d43", "#d73027"]
+                    },
+                    "legend": {"title": "Sector"}
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "sector_select",
+                        "value": 1
+                    },
+                    "value": 0.15
+                },
+                "tooltip": [
+                    {"field": "year", "title": "Year"},
+                    {"field": "sector", "title": "Sector"},
+                    {"field": "value", "title": "Water Use (ML)"}
+                ]
+            }
+        },
+        {
+            "width": 650,
+            "height": 100,
+            "params": [
+                {
+                    "name": "sector_select",
+                    "select": {
+                        "type": "point",
+                        "fields": ["sector"],
+                        "toggle": true
+                    }
+                }
+            ],
+            "mark": "bar",
+            "encoding": {
+                "x": {
+                    "field": "sector",
+                    "type": "nominal",
+                    "sort": "-y",
+                    "title": "Sector (Click to Filter)",
+                    "axis": {"labelAngle": 0}
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "aggregate": "mean",
+                    "title": "Annual Average Water Use",
+                    "axis": {"grid": false}
+                },
+                "color": {
+                    "condition": {
+                        "param": "sector_select",
+                        "field": "sector",
+                        "type": "nominal",
+                        "scale": {"scheme": "tableau10"}
+                    }, "value": "lightgrey"
+                },
+                "tooltip": [
+                    {"field": "year", "title": "Year"},
+                    {"field": "sector", "title": "Sector"},
+                    {"field": "value", "title": "Average Water Use (ML)"}
+                ]
+            }
+        }
+    ]
+    
+}

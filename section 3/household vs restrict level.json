@@ -1,0 +1,141 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 440,
+    "projection": {
+        "type": "mercator"
+    },
+    "config": {"view": {"stroke": null}},
+    "params": [
+        {
+            "name": "viewmode",
+            "value": "All",
+            "bind": {
+                "input": "select",
+                "options": ["All", "New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia", "Tasmania", "Northern Territory", "Australian Capital Territory"],
+                "name": "State "
+            }
+        }
+    ],
+    "layer": [
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/main/australia%20state.json",
+                "format": {"type": "topojson", "feature": "australia"}
+            },
+            "params": [
+                {
+                    "name": "hoverstate",
+                    "select": {
+                        "type": "point",
+                        "on": "mouseover",
+                        "clear": "mouseout",
+                        "fields": ["state_name"]
+                    }
+                }
+            ],
+            "transform": [
+                {
+                    "calculate": "datum.properties.name",
+                    "as": "state_name"
+                },
+                {
+                    "lookup": "state_name",
+                    "from": {
+                        "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/state%20household%20water%20use.csv"},
+                        "key": "state",
+                        "fields": ["value"]
+                    }
+                },
+                {"filter": "viewmode == 'All' || datum.state_name == viewmode"}
+            ],
+
+            "mark": {
+                "type": "geoshape",
+                "stroke": "#0f134a",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "color": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "blues",
+                        "type": "log"
+                    },
+                    "title": "Annual Water Use per Household"
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "hoverstate"
+                    }, "value": 0.6
+                },
+                "strokeWidth": {
+                    "condition": {
+                        "param": "hoverstate"
+                    }, "value": 0.2
+                },
+                "tooltip": [
+                    {"field": "properties.name", "type": "nominal", "title": "State"},
+                    {"field": "value", "type": "quantitative", "title": "Annual Water Use (kL)"}
+                ]
+            }
+        },
+        {
+            "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20restrict%20level.csv"},
+            "transform": [
+                {"calculate": "toNumber(datum.longitude)", "as": "lon"},
+                {"calculate": "toNumber(datum.latitude)", "as": "lat"},
+                {"calculate": "datum.state == 'NSW' ? 'New South Wales' : datum.state == 'VIC' ? 'Victoria' : datum.state == 'QLD' ? 'Queensland' : datum.state == 'SA' ? 'South Australia' : datum.state == 'WA' ? 'Western Australia' : datum.state == 'TAS' ? 'Tasmania' : datum.state == 'NT' ? 'Northern Territory' : datum.state == 'ACT' ? 'Australian Capital Territory' : datum.state",
+                    "as": "state_full"},
+                {"filter": "viewmode == 'All' || datum.state_full == viewmode"},
+                {"filter": {"param": "levelfilter"}}
+            ],
+            "mark": {
+                "type": "circle",
+                "size": 80,
+                "opacity": 0.75,
+                "stroke": "grey",
+                "strokeWidth": 0.5
+            },
+            "encoding": {
+                "longitude": {
+                    "field": "lon", "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "lat", "type": "quantitative"
+                },
+                "color": {
+                    "field": "restriction",
+                    "type": "nominal",
+                    "title": "Restriction Level",
+                    "scale": {
+                        "domain": ["Level 1", "Level 2", "Level 3", "PWCM", "No Restrictions"],
+                        "range": ["#ffd900", "#ff6c03", "#f51000", "#ffa1b8", "#bdb182"]
+                    }
+                },
+                "opacity": {
+                    "condition": {
+                        "test": "!hoverstate.state_name || datum.state_full == hoverstate.state_name",
+                        "value": 0.8
+                    }, "value": 0.25
+                },
+                "tooltip": [
+                    {"field": "area", "type": "nominal", "title": "Area/Council"},
+                    {"field": "state_full", "type": "nominal", "title": "State"},
+                    {"field": "restriction", "type": "nominal", "title": "Restriction"}
+                ]
+            },
+            "params": [
+                        {
+                            "name": "levelfilter",
+                            "select": {
+                                "type": "point",
+                                "fields": ["restriction"]
+                            },
+                            "bind": "legend"
+                        }
+                    ]
+        }
+    ]
+}

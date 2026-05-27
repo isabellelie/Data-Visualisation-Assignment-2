@@ -1,0 +1,78 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20source%20overtime.csv"},
+    "width": 700,
+    "height": 400,
+
+    "params": [
+        {
+            "name": "originfilter",
+            "select": {
+                "type": "point",
+                "fields": ["origin"]
+            },
+            "bind": "legend"
+        }
+    ],
+
+    "layer": [
+        {
+            "transform": [
+                {
+                    "calculate": "datum.origin == 'sea water' ? 0: datum.origin == 'groundwater' ? 1 : 2",
+                    "as": "originorder"
+                }
+            ],
+            "mark": {
+                "type": "area",
+                "opacity": 0.70
+            },
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "quantitative",
+                    "title": "Year",
+                    "axis": {
+                        "format": "d",
+                        "labelAngle": 0
+                    }
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "stack": "normalize",
+                    "title": "Water Supply Volume (ML)"
+                },
+                "color": {
+                    "field": "origin",
+                    "type": "nominal",
+                    "title": "Water Supply Source",
+                    "scale": {
+                        "domain": ["surface water", "groundwater", "sea water"],
+                        "range": [
+                            "#4C78A8",
+                            "#72B7B2",
+                            "#F58518"
+                        ]
+                    }
+                },
+                "opacity": {
+                    "condition": {
+                        "param": "originfilter",
+                        "value": 1
+                    },
+                    "value": 0.25
+                },
+                "order": {
+                    "field": "originorder",
+                    "type": "quantitative"
+                },
+                "tooltip": [
+                    {"field": "year"},
+                    {"field": "origin"},
+                    {"field": "value"}
+                ]
+            }
+        }
+    ]
+}

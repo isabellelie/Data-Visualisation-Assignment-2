@@ -1,0 +1,180 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20target.csv"},
+    "params": [
+        {
+            "name": "targetline_show",
+            "bind": {
+                "input": "checkbox",
+                "name": "Show Target Market "
+            }, "value": "true"
+        }
+    ],
+    "facet": {
+        "row": {
+            "field": "title",
+            "type": "ordinal",
+            "header": {
+                "labelAngle": 0,
+                "title": "",
+                "labelAlign": "left",
+                "labelFontSize": 14,
+                "labelFontWeight": "bold",
+                "labelPadding": 12
+            }
+        }
+    },
+    "spacing": 18,
+    "spec": {
+        "height": 65,
+        "width": 395,
+        "encoding": {
+            "x": {
+                "type": "quantitative",
+                "scale": {"nice": false},
+                "title": "GL/year"
+            },
+            "tooltip": [
+                {"field": "title", "title": "Target"},
+                {"field": "actual", "title": "Actual Delivered"},
+                {"field": "target", "title": "Target"},
+                {"field": "completion", "title": "Completion (%)"}
+            ]
+        },
+        "layer": [
+            {
+                "transform": [
+                    {"calculate": "datum.range2", "as": "range2"}
+                ],
+                "mark": {
+                    "type": "bar",
+                    "color": "#eeeeee",
+                    "size": 60
+                },
+                "encoding": {"x": {"field": "range2"}}
+            },
+            {
+                "transform": [
+                    {"calculate": "datum.range1", "as": "range1"}
+                ],
+                "mark": {
+                    "type": "bar",
+                    "color": "#d9d9d9",
+                    "size": 60
+                },
+                "encoding": {"x": {"field": "range1"}}
+            },
+            {
+                "transform": [
+                    {"calculate": "datum.range0", "as": "range0"}
+                ],
+                "mark": {
+                    "type": "bar",
+                    "color": "#bdbdbd",
+                    "size": 60
+                },
+                "encoding": {"x": {"field": "range0"}}
+            },
+            {
+                "mark": {
+                    "type": "bar",
+                    "color": "#153dbf",
+                    "size": 20
+                },
+                "encoding": {"x": {"field": "actual"}}
+            },
+            {
+                "transform": [
+                    {"calculate": "datum.actual / 2", "as": "center"}
+                ],
+                "mark": {
+                    "type": "text",
+                    "align": "center",
+                    "baseline": "middle",
+                    "fontWeight": "bold",
+                    "color": "white"
+                },
+                "encoding": {
+                    "x": {"field": "center"},
+                    "text": {"field": "actual", "format": ",.1f"}
+                }
+            },
+            {
+                "transform": [
+                    {"filter": "targetline_show"}
+                ],
+                "mark": {
+                    "type": "tick",
+                    "color": "black",
+                    "thickness": 3,
+                    "size": 42
+                },
+                "encoding": {
+                    "x": {"field": "target"}
+                }
+            },
+            {
+                "transform": [
+                    {"filter": "targetline_show"}
+                ],
+                "mark": {
+                    "type": "text",
+                    "align": "left",
+                    "baseline": "middle",
+                    "dx": 6,
+                    "fontWeight": "bold",
+                    "color": "black"
+                },
+                "encoding": {
+                    "x": {"field": "target"},
+                    "text": {"field": "target", "format": ",.1f"}
+                }
+            },
+            {
+                "data": {
+                    "values": [
+                        {"stage": "Stage 1", "y": 4, "color": "#bdbdbd"},
+                        {"stage": "Stage 2", "y": 3, "color": "#d9d9d9"},
+                        {"stage": "Stage 3", "y": 2, "color": "#eeeeee"},
+                        {"stage": "Progress", "y": 1, "color": "#153dbf"}
+                    ]
+                },
+
+                    "mark": {
+                        "type": "point",
+                        "size": 120,
+                        "filled": true,
+                        "opacity": 0
+                    },
+
+                    "encoding": {
+                        "x": {"value": 10},
+                        "y": {
+                            "field": "y",
+                            "type": "quantitative",
+                            "axis": null
+                        },
+
+                        "color": {
+                            "field": "stage",
+                            "type": "nominal",
+                            "scale": {
+                                "domain": ["Stage 1", "Stage 2", "Stage 3", "Progress"],
+                                "range": ["#bdbdbd", "#d9d9d9", "#eeeeee", "#153dbf"]
+                            },
+                            "legend": {"title": "Stages"}
+                        }
+                    }
+            }
+        ]
+    },
+    "resolve": {
+        "scale": {"x": "independent"}
+    },
+    "config": {
+        "background": "transparent",
+        "view": {"stroke": null},
+        "axis": {"grid": false},
+        "padding": {"bottom": 10}
+    }
+}

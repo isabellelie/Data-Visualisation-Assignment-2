@@ -1,0 +1,102 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/water%20use%20per%20person%20annual.csv"},
+    "width": 640,
+    "height": 500,
+    "config": {"axis": {"grid": false}, "view": {"stroke": null}},
+    "params": [
+        {
+        "name": "yearselect",
+        "value": 2021,
+        "bind": {
+            "input": "range",
+            "min": 1971,
+            "max": 2021,
+            "step": 1,
+            "name": "Year "
+        }
+        }
+    ],
+
+    "transform": [
+        {"calculate": "toNumber(datum.year)", "as": "year"},
+        {"filter": "datum.year == yearselect"},
+        {"calculate": "toNumber(datum.population)", "as": "population"},
+        {"calculate": "toNumber(datum.wateruse)", "as": "demand"},
+        {"aggregate": [
+            { "op": "sum", "field": "demand", "as": "demand" }
+        ], "groupby": ["city"]
+        },
+        {
+            "lookup": "city",
+            "from": {
+                "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/refs/heads/main/population%20vs%20storage.csv"},
+                "key": "city",
+                "fields": ["capacity"]}
+        },
+        {"calculate": "(datum.demand/ datum.capacity) * 100", "as": "trend"},
+        {"calculate": "format(datum.trend, '.1f') + '%'", "as": "trend_label"},
+        {"fold": ["demand", "capacity"], "as": ["type", "value"]},
+        {"calculate": "datum.type == 'demand' ? 'Population Water Demand (ML)' : 'Water Capacity'", "as": "type"},
+        {"joinaggregate": [
+            { "op": "mean", "field": "value", "as": "mid_y" }
+        ],"groupby": ["city"]},
+        {"filter": {"param": "cityfilter"}}
+    ],
+    "layer": [
+        {
+           "mark": {
+                "type": "line",
+                "point": true
+            },
+            "encoding": {
+                "x": {
+                    "field": "type",
+                    "type": "nominal",
+                    "axis": {
+                        "labelAngle": 0,
+                        "title": null
+                    },
+                    "scale": {
+                        "padding": 0.15
+                    }
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "title": "Megalitres (ML)"
+                },
+                "color": {
+                    "field": "city",
+                    "type": "nominal",
+                    "scale": { 
+                        "domain": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Hobart", "Darwin"], 
+                        "range": ["#4e79a7", "#fa8e9d", "#f53155", "#ff8624", "#4acae0", "#fff154", "#c487de", "#805e44"] 
+                    },
+                    "legend": {"title": "City"}
+                },
+                "strokeWidth": {
+                "field": "trend",
+                "type": "quantitative",
+                "scale": {"range": [1, 3]},
+                "legend": null
+            },
+                "tooltip": [
+                    { "field": "city", "title": "City" },
+                    { "field": "demand", "format": ",", "title": "Population Water Demand (ML)" },
+                    { "field": "capacity", "format": ",", "title": "Water Capacity Available (ML)" },
+                    { "field": "trend_label", "title": "Water Capacity / Population (%)" }
+                ]
+            },
+            "params": [
+                {
+                    "name": "cityfilter",
+                    "select": {
+                    "type": "point",
+                    "fields": ["city"]
+                    }, "bind": "legend"
+                }
+            ]
+        }
+    ]
+}

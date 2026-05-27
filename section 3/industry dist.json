@@ -1,0 +1,292 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 940,
+    "height": 600,
+    "config": {"view": {"stroke": null}, "padding": {"bottom": -90}},
+    "data": {"url": "https://raw.githubusercontent.com/isabellelie/Data-Visualisation-2/main/sector%20rainfall.csv"},
+    "params": [
+        {
+            "name": "year_select",
+            "value": 2024,
+            "bind": {
+                "input": "range",
+                "min": 2015,
+                "max": 2024,
+                "step": 1,
+                "name": "Year"
+            }
+        }
+    ],
+    "transform": [
+        {
+            "filter": "toNumber(datum.year) == year_select"
+        },
+        {
+            "joinaggregate": [
+                {
+                    "op": "sum",
+                    "field": "value",
+                    "as": "total_value"
+                }
+            ],
+            "groupby": ["year"]
+        },
+        {
+            "calculate": "datum.value / datum.total_value",
+            "as": "proportion"
+        },
+        {
+            "calculate": "round(datum.proportion * 100)",
+            "as": "percent"
+        }
+    ],
+    "layer": [
+        {
+            "mark": {
+                "type": "arc",
+                "innerRadius": 0
+            },
+            "encoding": {
+                "theta": {
+                    "field": "sector",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "proportion",
+                        "order": "descending"
+                    }
+                },
+                "radius": {
+                    "field": "proportion",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "sqrt"
+                    }
+                },
+                "color": {
+                    "field": "sector",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Agriculture", "Household", "Other Industries", "Manufacturing", "Mining"],
+                        "range": ["#04c4b1","#2c7bb6","#abd9e9","#FFA552","#A8744F"]
+                    },
+                    "legend": {
+                        "title": "Sector"
+                    }
+                },
+                "tooltip": [
+                    {"field": "year", "title": "Year"},
+                    {"field": "sector", "title": "Sector"},
+                    {"field": "value", "title": "Water Use (ML)"},
+                    {"field": "percent", "title": "Share (%)"}
+                ]
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "radiusOffset": 25,
+                "fontSize": 12,
+                "color": "black",
+                "fontWeight": "bold"
+            },
+            "encoding": {
+                "theta": {
+                    "field": "sector",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "value",
+                        "order": "descending"
+                    }
+                },
+                "radius": {
+                    "field": "proportion",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "sqrt",
+                        "domain": [0, 1]
+                    }
+                },
+                "text": {
+                    "field": "value",
+                    "type": "quantitative"
+                }
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Agriculture'"
+                }
+            ],
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "x": {"value": 800},
+                "y": {"value": 200},
+                "x2": {"value": 680},
+                "y2": {"value": 190}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Agriculture'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "fontSize": 12,
+                "align": "left",
+                "lineBreak": "\n",
+                "dx": 70,
+                "dy": -20
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "text": {
+                    "value": "Agriculture is the primary drain\non water supply throughout \nthe years, having the largest \nconsumption"
+                },
+                "x": {"value": 650},
+                "y": {"value": 320}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Household'"
+                }
+            ],
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "x": {"value": 580},
+                "y": {"value": 380},
+                "x2": {"value": 650},
+                "y2": {"value": 390}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Household'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "fontSize": 12,
+                "align": "left",
+                "lineBreak": "\n",
+                "dx": 70,
+                "dy": -20
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "text": {
+                    "value": "Household peaked at 2020 \nand has persistently decrease \nsince then"
+                },
+                "x": {"value": 450},
+                "y": {"value": 350}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Mining'"
+                }
+            ],
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "x": {"value": 440},
+                "y": {"value": 300},
+                "x2": {"value": 330},
+                "y2": {"value": 290}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Mining'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "fontSize": 12,
+                "align": "left",
+                "lineBreak": "\n",
+                "dx": 70,
+                "dy": -20
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "text": {
+                    "value": "Mining and Manufacturing \nhas the smallest proportion, \nfacing intense supply strains \nbut minor water footprint"
+                },
+                "x": {"value": 240},
+                "y": {"value": 250}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Manufacturing'"
+                }
+            ],
+            "mark": {
+                "type": "rule",
+                "color": "black",
+                "strokeWidth": 1
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "x": {"value": 445},
+                "y": {"value": 340},
+                "x2": {"value": 400},
+                "y2": {"value": 420}
+            }
+        },
+        {
+            "transform": [
+                {
+                "filter": "datum.sector == 'Manufacturing'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "fontSize": 12,
+                "align": "left",
+                "lineBreak": "\n",
+                "dx": 70,
+                "dy": -20
+            },
+            "encoding": {
+                "theta": {"field": "sector"},
+                "radius": {"field": "proportion"},
+                "text": {
+                    "value": "All sectors experienced \na significant decline in \nwater usage in 2021"
+                },
+                "x": {"value": 240},
+                "y": {"value": 300}
+            }
+        }
+    ]
+}
